@@ -1,7 +1,7 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 canvas.width = 400;
-canvas.height = window.innerHeight / 2; 
+canvas.height = 400; // bisa disesuaikan
 
 const confettiCanvas = document.getElementById("confetti");
 const confettiCtx = confettiCanvas.getContext("2d");
@@ -11,32 +11,41 @@ confettiCanvas.height = window.innerHeight;
 let candlesLit = [true, true, true, true, true];
 let confettiPieces = [];
 
-// gambar kue
+// draw cake 3 layer menempel rapi
 function drawCake() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // === kue 3 layer ===
-  ctx.fillStyle = "#f8c8dc"; // pink pastel
-  ctx.fillRect(120, 260, 260, 60);
+  // tinggi layer
+  const bottomHeight = 60;
+  const middleHeight = 50;
+  const topHeight = 40;
 
-  ctx.fillStyle = "#c8e6f8"; // biru pastel
-  ctx.fillRect(140, 200, 220, 50);
+  // layer bawah
+  ctx.fillStyle = "#f4a7b9"; 
+  const bottomY = 260;
+  ctx.fillRect(120, bottomY, 160, bottomHeight);
 
-  ctx.fillStyle = "#d9f8c8"; // hijau pastel
-  ctx.fillRect(160, 150, 180, 40);
+  // layer tengah
+  ctx.fillStyle = "#c8e6f8"; 
+  const middleY = bottomY - middleHeight;
+  ctx.fillRect(130, middleY, 140, middleHeight);
 
-  // === lilin ===
+  // layer atas
+  ctx.fillStyle = "#d9f8c8"; 
+  const topY = middleY - topHeight;
+  ctx.fillRect(140, topY, 120, topHeight);
+
+  // lilin
   const spacing = 180 / (candlesLit.length + 1);
   for (let i = 0; i < candlesLit.length; i++) {
     const x = 160 + spacing * (i + 1);
-    const y = 130;
+    const y = topY - 30;
 
-   // batang lilin
+    // batang lilin
     ctx.fillStyle = "#87cefa";
     ctx.fillRect(x - 5, y, 10, 40);
 
     if (candlesLit[i]) {
-      // bikin api flicker
       const flickerX = (Math.random() - 0.5) * 4;
       const flickerY = (Math.random() - 0.5) * 2;
       const flameHeight = 12 + Math.random() * 2;
@@ -54,7 +63,6 @@ function drawCake() {
       ctx.fillStyle = "orange";
       ctx.fill();
 
-      // glow effect
       ctx.shadowColor = "yellow";
       ctx.shadowBlur = 15;
       ctx.fill();
@@ -70,12 +78,12 @@ function animate() {
 
 animate();
 
-// confetti class
+// confetti
 function ConfettiPiece(x, y, color) {
   this.x = x;
   this.y = y;
   this.color = color;
-  this.size = Math.random() * 6 + 4; // ukuran random
+  this.size = Math.random() * 6 + 4;
   this.speedY = Math.random() * 3 + 2;
   this.speedX = (Math.random() - 0.5) * 2;
 }
@@ -95,17 +103,12 @@ function drawConfetti() {
   for (let i = 0; i < confettiPieces.length; i++) {
     let p = confettiPieces[i];
     confettiCtx.fillStyle = p.color;
-
-    // hanya lingkaran
     confettiCtx.beginPath();
     confettiCtx.arc(p.x, p.y, p.size, 0, 2 * Math.PI);
     confettiCtx.fill();
-
-    // gerakan
     p.y += p.speedY;
     p.x += p.speedX;
 
-    // hapus kalau sudah keluar layar
     if (p.y > confettiCanvas.height) {
       confettiPieces.splice(i, 1);
       i--;
@@ -115,9 +118,9 @@ function drawConfetti() {
 }
 drawConfetti();
 
-// mic sensitif
+// mic blow
 navigator.mediaDevices.getUserMedia({ audio: true })
-  .then(function(stream) {
+  .then(stream => {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
     const analyser = audioContext.createAnalyser();
     const mic = audioContext.createMediaStreamSource(stream);
@@ -130,7 +133,7 @@ navigator.mediaDevices.getUserMedia({ audio: true })
       for (let i = 0; i < data.length; i++) values += data[i];
       let average = values / data.length;
 
-      if (average > 30 && candlesLit.some(l => l)) {
+      if (average > 50 && candlesLit.some(l => l)) {
         for (let i = 0; i < candlesLit.length; i++) {
           if (candlesLit[i]) {
             candlesLit[i] = false;
@@ -148,9 +151,7 @@ navigator.mediaDevices.getUserMedia({ audio: true })
     }
     detectBlow();
   })
-  .catch(function(err) {
-    console.log("Mic not allowed", err);
-  });
+  .catch(err => console.log("Mic not allowed", err));
 
 // fallback klik
 canvas.addEventListener("click", () => {
