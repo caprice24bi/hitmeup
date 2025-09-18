@@ -26,7 +26,11 @@ function drawCake() {
   ctx.save();
   ctx.translate(canvas.width / 2, canvas.height / 2); // posisi tengah
   ctx.scale(scale, scale);
-  ctx.translate(-200, -200); // geser biar gambar di tengah
+
+  // hitung total ukuran kue (3 layer + lilin)
+  const cakeWidth = 260;
+  const cakeHeight = 80 + 60 + 50 + 40; // layer bawah + tengah + atas + lilin
+  ctx.translate(-cakeWidth / 2, -cakeHeight / 2);
 
   // === kue 3 layer ===
   ctx.fillStyle = "#f8c8dc"; // pink pastel
@@ -156,7 +160,7 @@ navigator.mediaDevices.getUserMedia({ audio: true })
       for (let i = 0; i < data.length; i++) values += data[i];
       let average = values / data.length;
 
-      if (average > 20 && candlesLit.some(l => l)) {
+      if (average > 50 && candlesLit.some(l => l)) {
         for (let i = 0; i < candlesLit.length; i++) {
           if (candlesLit[i]) {
             candlesLit[i] = false;
