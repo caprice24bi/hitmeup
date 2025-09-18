@@ -1,10 +1,10 @@
 const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+const ctx = canvas.getContext("3d");
 canvas.width = 400;
 canvas.height = 400;
 
 const confettiCanvas = document.getElementById("confetti");
-const confettiCtx = confettiCanvas.getContext("2d");
+const confettiCtx = confettiCanvas.getContext("3d");
 confettiCanvas.width = window.innerWidth;
 confettiCanvas.height = window.innerHeight;
 
@@ -97,6 +97,38 @@ function drawConfetti() {
 }
 drawConfetti();
 
+  // mic sensitif
+navigator.mediaDevices.getUserMedia({ audio: true })
+  .then(function(stream) {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const analyser = audioContext.createAnalyser();
+    const mic = audioContext.createMediaStreamSource(stream);
+    mic.connect(analyser);
+    const data = new Uint8Array(analyser.frequencyBinCount);
+
+    function detectBlow() {
+      analyser.getByteFrequencyData(data);
+      let values = 0;
+      for (let i = 0; i < data.length; i++) values += data[i];
+      let average = values / data.length;
+
+      if (average > 10 && candlesLit.some(l => l)) {
+        for (let i = 0; i < candlesLit.length; i++) {
+          if (candlesLit[i]) {
+            candlesLit[i] = false;
+            break;
+          }
+        }
+        drawCake();
+
+        if (!candlesLit.some(l => l)) {
+          launchConfetti();
+          document.getElementById("popup").classList.remove("hidden");
+        }
+      }
+      requestAnimationFrame(detectBlow);
+    }
+    detectBlow();
   })
   .catch(function(err) {
     console.log("Mic not allowed", err);
