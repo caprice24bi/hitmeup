@@ -147,7 +147,7 @@ navigator.mediaDevices.getUserMedia({ audio: true })
       for (let i = 0; i < data.length; i++) values += data[i];
       let average = values / data.length;
 
-      if (average > 10 && candlesLit.some(l => l)) {
+      if (average > 30 && candlesLit.some(l => l)) {
         for (let i = 0; i < candlesLit.length; i++) {
           if (candlesLit[i]) {
             candlesLit[i] = false;
