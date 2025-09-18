@@ -1,40 +1,89 @@
 const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("3d");
+const ctx = canvas.getContext("2d");
 canvas.width = 400;
 canvas.height = 400;
 
 const confettiCanvas = document.getElementById("confetti");
-const confettiCtx = confettiCanvas.getContext("3d");
+const confettiCtx = confettiCanvas.getContext("2d");
 confettiCanvas.width = window.innerWidth;
 confettiCanvas.height = window.innerHeight;
 
 let candlesLit = [true, true, true, true, true];
 let confettiPieces = [];
 
-// gambar kue
+// atur ukuran canvas sesuai layar
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
 function drawCake() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // kue dasar
-  ctx.fillStyle = "#d2691e";
-  ctx.fillRect(100, 250, 200, 100);
-  ctx.fillStyle = "#8b4513";
-  ctx.fillRect(100, 230, 200, 20);
+  // skala berdasarkan ukuran layar
+  const scale = Math.min(canvas.width, canvas.height) / 400;
+  ctx.save();
+  ctx.translate(canvas.width / 2, canvas.height / 2); // posisi tengah
+  ctx.scale(scale, scale);
+  ctx.translate(-200, -200); // geser biar gambar di tengah
 
-  // lilin
-  const spacing = 200 / (candlesLit.length + 1);
+  // === kue 3 layer ===
+  ctx.fillStyle = "#f8c8dc"; // pink pastel
+  ctx.fillRect(120, 260, 260, 80);
+
+  ctx.fillStyle = "#c8e6f8"; // biru pastel
+  ctx.fillRect(140, 200, 220, 60);
+
+  ctx.fillStyle = "#d9f8c8"; // hijau pastel
+  ctx.fillRect(160, 150, 180, 50);
+
+ // === lilin ===
+  const spacing = 180 / (candlesLit.length + 1);
   for (let i = 0; i < candlesLit.length; i++) {
-    const x = 100 + spacing * (i + 1);
-    const y = 190;
+    const x = 160 + spacing * (i + 1);
+    const y = 130;
 
+    // batang lilin
     ctx.fillStyle = "#87cefa";
     ctx.fillRect(x - 5, y, 10, 40);
 
     if (candlesLit[i]) {
+      // efek flicker
+      const flickerX = (Math.random() - 0.5) * 4;
+      const flickerY = (Math.random() - 0.5) * 2;
+      const flameHeight = 12 + Math.random() * 2;
+
       ctx.beginPath();
-      ctx.ellipse(x, y - 10, 6, 12, 0, 0, Math.PI * 2);
+      ctx.ellipse(
+        x + flickerX,
+        y - 10 + flickerY,
+        6,
+        flameHeight,
+        0,
+        0,
+        Math.PI * 2
+      );
       ctx.fillStyle = "orange";
       ctx.fill();
+
+      ctx.shadowColor = "yellow";
+      ctx.shadowBlur = 15;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+  }
+
+  ctx.restore();
+}
+
+function animate() {
+  drawCake();
+  requestAnimationFrame(animate);
+}
+
+animate();
     }
   }
 }
