@@ -1,23 +1,21 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-canvas.width = 400;
-canvas.height = 400;
 
 const confettiCanvas = document.getElementById("confetti");
 const confettiCtx = confettiCanvas.getContext("2d");
-confettiCanvas.width = window.innerWidth;
-confettiCanvas.height = window.innerHeight;
 
-let candlesLit = [true, true, true, true, true];
-let confettiPieces = [];
-
-// atur ukuran canvas sesuai layar
+// atur ukuran canvas full screen
 function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+  confettiCanvas.width = window.innerWidth;
+  confettiCanvas.height = window.innerHeight;
 }
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
+
+let candlesLit = [true, true, true, true, true];
+let confettiPieces = [];
 
 function drawCake() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
