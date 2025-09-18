@@ -17,13 +17,13 @@ function drawCake() {
 
   // === kue 3 layer ===
   ctx.fillStyle = "#f8c8dc"; // pink pastel
-  ctx.fillRect(120, 260, 260, 80);
+  ctx.fillRect(120, 260, 260, 60);
 
   ctx.fillStyle = "#c8e6f8"; // biru pastel
-  ctx.fillRect(140, 200, 220, 60);
+  ctx.fillRect(140, 200, 220, 50);
 
   ctx.fillStyle = "#d9f8c8"; // hijau pastel
-  ctx.fillRect(160, 150, 180, 50);
+  ctx.fillRect(160, 150, 180, 40);
 
   // === lilin ===
   const spacing = 180 / (candlesLit.length + 1);
