@@ -15,9 +15,6 @@ let confettiPieces = [];
 function drawCake() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx.fillStyle = "#f4a7b9"; // layer bawah (pink pastel)
-  ctx.fillRect(100, 260, 200, 60);
-
   // === kue 3 layer ===
   ctx.fillStyle = "#f8c8dc"; // pink pastel
   ctx.fillRect(120, 260, 260, 80);
