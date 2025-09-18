@@ -11,35 +11,49 @@ confettiCanvas.height = window.innerHeight;
 let candlesLit = [true, true, true, true, true];
 let confettiPieces = [];
 
-// draw cake 3 layer menempel rapi
+// draw cake 3 layer lebih lebar + lilin di layer atas
 function drawCake() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // tinggi layer
   const bottomHeight = 60;
   const middleHeight = 50;
-  const topHeight = 40;
+  const topHeight = 50;
+
+  // lebar layer
+  const bottomWidth = 220;
+  const middleWidth = 180;
+  const topWidth = 160;
+
+  // posisi X layer
+  const bottomX = (canvas.width - bottomWidth) / 2;
+  const middleX = (canvas.width - middleWidth) / 2;
+  const topX = (canvas.width - topWidth) / 2;
+
+  // posisi Y layer
+  const bottomY = 260;
+  const middleY = bottomY - middleHeight;
+  const topY = middleY - topHeight;
 
   // layer bawah
-  ctx.fillStyle = "#f4a7b9"; 
-  const bottomY = 260;
-  ctx.fillRect(120, bottomY, 160, bottomHeight);
+  ctx.fillStyle = "#f4a7b9";
+  ctx.fillRect(bottomX, bottomY, bottomWidth, bottomHeight);
 
   // layer tengah
-  ctx.fillStyle = "#c8e6f8"; 
-  const middleY = bottomY - middleHeight;
-  ctx.fillRect(130, middleY, 140, middleHeight);
+  ctx.fillStyle = "#c8e6f8";
+  ctx.fillRect(middleX, middleY, middleWidth, middleHeight);
 
   // layer atas
-  ctx.fillStyle = "#d9f8c8"; 
-  const topY = middleY - topHeight;
-  ctx.fillRect(140, topY, 120, topHeight);
+  ctx.fillStyle = "#d9f8c8";
+  ctx.fillRect(topX, topY, topWidth, topHeight);
 
   // lilin
-  const spacing = 180 / (candlesLit.length + 1);
-  for (let i = 0; i < candlesLit.length; i++) {
-    const x = 160 + spacing * (i + 1);
-    const y = topY - 30;
+  const candleCount = candlesLit.length;
+  const spacing = topWidth / (candleCount + 1);
+
+  for (let i = 0; i < candleCount; i++) {
+    const x = topX + spacing * (i + 1);
+    const y = topY - 30; // batang lilin di atas layer atas
 
     // batang lilin
     ctx.fillStyle = "#87cefa";
@@ -133,7 +147,7 @@ navigator.mediaDevices.getUserMedia({ audio: true })
       for (let i = 0; i < data.length; i++) values += data[i];
       let average = values / data.length;
 
-      if (average > 50 && candlesLit.some(l => l)) {
+      if (average > 10 && candlesLit.some(l => l)) {
         for (let i = 0; i < candlesLit.length; i++) {
           if (candlesLit[i]) {
             candlesLit[i] = false;
