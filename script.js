@@ -21,9 +21,9 @@ function drawCake() {
   const topHeight = 50;
 
   // lebar layer
-  const bottomWidth = 220;
-  const middleWidth = 180;
-  const topWidth = 160;
+  const bottomWidth = 260;
+  const middleWidth = 220;
+  const topWidth = 200;
 
   // posisi X layer
   const bottomX = (canvas.width - bottomWidth) / 2;
