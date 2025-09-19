@@ -40,19 +40,24 @@ h1 {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.3); /* semi-transparan, bisa lihat cake di belakang */
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 .popup-content {
-  background: white;
+  background: rgba(255,255,255,0.85); /* konten putih semi-transparan */
   padding: 20px 30px;
-  font-size: 24px;
+  font-size: clamp(18px, 2vw, 24px); /* font responsif */
   font-weight: bold;
   border-radius: 12px;
   color: #333;
+  max-width: 90%; /* supaya popup nggak melebihi layar */
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* efek sedikit nge-pop */
 }
 
 .hidden {
